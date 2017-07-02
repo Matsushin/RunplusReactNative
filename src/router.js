@@ -10,6 +10,7 @@ import ActivityScreen from './screens/ActivityScreen';
 import ActivityDetailScreen from './screens/ActivityDetailScreen';
 import RunEventTopScreen from './screens/RunEventTopScreen';
 import RunningScreen from './screens/RunningScreen';
+import SettingScreen from './screens/SettingScreen';
 
 class NavigationRouter extends Component {
 
@@ -25,7 +26,8 @@ class NavigationRouter extends Component {
             <Scene key="activity" component={ActivityScreen} title="アクティビティ" />
             <Scene key="activityDetail" component={ActivityDetailScreen} />
           </Scene>
-          <Scene key="runEventTop" initial component={RunEventTopScreen} title="Run+" icon={TabIcon}/>
+          <Scene key="runEventTop" initial component={RunEventTopScreen} title="Run+" icon={TabIcon}  />
+          <Scene key="setting" component={SettingScreen} title="設定" icon={TabIcon}/>
         </Scene>
         <Scene key="running" component={RunningScreen} title="Run+" />
       </RouterWithRedux>

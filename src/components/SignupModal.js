@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Text, Alert } from 'react-native';
+import { Modal, Text, Alert, View } from 'react-native';
 import {
   Container,
   Content,
@@ -13,10 +13,10 @@ import {
   Button,
 } from 'native-base';
 import { connect } from 'react-redux';
+import { Actions } from 'react-native-router-flux';
 import { setCurrentUser } from '../actions/currentUser';
 import FadeLoading from '../components/FadeLoading';
 import ApiClient from '../ApiClient';
-import { signupModalOff } from '../actions/signupModal';
 
 class SignupModal extends Component {
   constructor(props) {
@@ -50,7 +50,6 @@ class SignupModal extends Component {
     .then((response) => {
       if (response.user) {
         this.props.setCurrentUser(response.user);
-        this.props.signupModalOff();
       } else if (response.error) {
         Alert.alert(
           'エラー',
@@ -66,13 +65,15 @@ class SignupModal extends Component {
 
   renderLoginButton() {
     return (
-      <Button
-        onPress={() => this.handlePressLogin()}
-        style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20, paddingLeft: 30, paddingRight: 30 }}
-        disabled={!this.isLoginButtonTouchable}
-      >
-        <Text>ログイン</Text>
-      </Button>
+      <View>
+        <Button
+          onPress={() => this.handlePressLogin()}
+          style={{ alignSelf: 'center', marginTop: 20, marginBottom: 20, paddingLeft: 30, paddingRight: 30 }}
+          disabled={!this.isLoginButtonTouchable}
+        >
+          <Text>ログイン</Text>
+        </Button>
+      </View>
     );
   }
 
@@ -80,12 +81,11 @@ class SignupModal extends Component {
     const { email, password } = this.state;
     return (
       <Modal
-        transparent
         visible={this.props.user ? false : true}
       >
         <Container>
           <Content>
-            <Card style={{ marginTop: 10, marginLeft: 20, marginRight: 20, paddingTop: 10 }}>
+            <Card style={{ marginTop: 100, marginLeft: 20, marginRight: 20, paddingTop: 10 }}>
               <CardItem>
                 <List style={{ width: 300 }}>
                   <ListItem style={{ marginBottom: 12 }}>
@@ -130,23 +130,18 @@ class SignupModal extends Component {
 }
 
 SignupModal.propTypes = {
-  signupModalOff: React.PropTypes.func.isRequired,
   setCurrentUser: React.PropTypes.func.isRequired,
   user: React.PropTypes.object,
 };
 
 function select(store) {
   return {
-    signupModal: store.signupModal.visible,
     user: store.currentUser.user,
   };
 }
 
 function actions(dispath) {
   return {
-    signupModalOff: () => {
-      dispath(signupModalOff());
-    },
     setCurrentUser: (user) => {
       dispath(setCurrentUser(user));
     },

@@ -12,25 +12,13 @@ import ApiClient from '../ApiClient';
 class RunEventTopScreen extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      items: [],
-      isLoading: false,
-    };
-  }
-
-  startRun() {
-    Actions.running();
   }
 
   render() {
-    if (this.state.isLoading) {
-      return <Loading />;
-    }
     return (
-      <Container style={{ marginTop: 70 }}>
+      <Container style={{ marginTop: 70, flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Content>
-          <Button rounded onPress={() => this.startRun()}><Text>Start</Text></Button>
+          <Button rounded onPress={Actions.running}><Text>Start</Text></Button>
         </Content>
       </Container>
     );

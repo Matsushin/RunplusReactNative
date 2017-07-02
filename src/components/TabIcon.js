@@ -11,7 +11,8 @@ import colors from '../colors';
 
 const icons = {
   activityTab: 'Activity',
-  runEventTop: 'Run'
+  runEventTop: 'Run',
+  setting: 'Setting'
 }
 
 class TabIcon extends Component {
