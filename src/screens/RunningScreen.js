@@ -6,6 +6,7 @@ import { Text, Container, Content, Button } from 'native-base';
 import { connect } from 'react-redux';
 import { Actions, ActionConst } from 'react-native-router-flux';
 import ApiClient from '../ApiClient';
+import CountDownView from '../components/CountDownView';
 import moment from 'moment';
 
 const { RNLocation: Location } = require('NativeModules');
@@ -39,12 +40,14 @@ class RunningScreen extends Component {
         distance: 0,
         timer: undefined,
         recordedAt: null,
+        countDownNumber: 5,
+        countDown: true,
       };
   }
 
   componentDidMount() {
     AppState.addListener('appStateDidChange', this.handleAppStateChange);
-    this.startRun();
+    this.countDown();
   }
 
   componentWillUnmount() {
@@ -52,6 +55,17 @@ class RunningScreen extends Component {
     this.setState({ timer: undefined });
     // 前の画面に戻った後再度開始するとエラーとなるため一旦コメントアウト
     //AppState.removeEventListener('appStateDidChange', this.handleAppStateChange);
+  }
+
+  countDown() {
+    countDownTimer = setInterval(() => {
+      this.setState({ countDownNumber: this.state.countDownNumber - 1 });
+      if (this.state.countDownNumber < 1) {
+        clearInterval(countDownTimer);
+        this.setState({countDown: false});
+        this.startRun();
+      }
+    }, 1000);
   }
 
   handleAppStateChange = (nextAppState) => {
@@ -153,6 +167,9 @@ class RunningScreen extends Component {
 
   render() {
     let button;
+    if (this.state.countDown) {
+      return <CountDownView countDownNumber={this.state.countDownNumber}/>
+    }
     if (this.state.isRun) {
       button = (
         <Button onPress={() => this.stopRun()}><Text>Stop</Text></Button>
